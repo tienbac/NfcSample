@@ -15,10 +15,10 @@ namespace TN.NFC.Core.Entity
 
     public class Response
     {
-        internal string Imei { get; set; }
-        internal StatusResponse Status { get; set; }
-        internal string ErrorMessage { get; set; }
-        internal VehicleData VehicleData { get; set; }
+        public string Imei { get; set; }
+        public StatusResponse Status { get; set; }
+        public string ErrorMessage { get; set; }
+        public VehicleData VehicleData { get; set; }
 
         public Response()
         {

@@ -8,20 +8,20 @@ using TN.NFC.Core.PcscCore;
 
 namespace TN.NFC.Core.CardCore
 {
-    internal enum KEY_STRUCTURE
+    public enum KEY_STRUCTURE
     {
         VOLATILE = 0x00,
         NON_VOLATILE = 0x20
     }
 
-    internal enum KEYTYPES
+    public enum KEYTYPES
     {
         ACR122_KEYTYPE_A = 96,
         ACR122_KEYTYPE_B = 97,
     }
-    internal class ReaderFunctions : PcscReader
+    public class ReaderFunctions : PcscReader
     {
-        internal byte[] getCardSerialNumber()
+        public byte[] getCardSerialNumber()
         {
             byte[] cardSerial;
 
@@ -44,7 +44,7 @@ namespace TN.NFC.Core.CardCore
 
         }
 
-        internal byte[] getAnswerToSelect()
+        public byte[] getAnswerToSelect()
         {
             apduCommand = new Apdu();
             apduCommand.setCommand(new byte[] {  0xFF,
@@ -63,7 +63,7 @@ namespace TN.NFC.Core.CardCore
             return apduCommand.response;
         }
 
-        internal void loadAuthKey(KEY_STRUCTURE keyStructure, byte keyNumber, byte[] key)
+        public void loadAuthKey(KEY_STRUCTURE keyStructure, byte keyNumber, byte[] key)
         {
 
             if (key.Length != 6)
@@ -87,7 +87,7 @@ namespace TN.NFC.Core.CardCore
 
         }
 
-        internal void authenticate(byte blockNumber, KEYTYPES keyType, byte KeyNumber)
+        public void authenticate(byte blockNumber, KEYTYPES keyType, byte KeyNumber)
         {
             if (KeyNumber < 0x00 && KeyNumber > 0x20)
                 throw new Exception("Key number is invalid");

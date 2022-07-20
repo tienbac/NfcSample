@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TN.NFC.Core.MifareCore
 {
-    internal class Helper
+    public class Helper
     {
-        internal static byte[] getBytes(string stringBytes, char delimeter)
+        public static byte[] getBytes(string stringBytes, char delimeter)
         {
             string[] arrayString = stringBytes.Split(delimeter);
             byte[] bytesResult = new byte[arrayString.Length];
@@ -30,7 +30,7 @@ namespace TN.NFC.Core.MifareCore
             return bytesResult;
         }
 
-        internal static byte[] getBytes(string stringBytes)
+        public static byte[] getBytes(string stringBytes)
         {
             string fString = "";
             int counter = 0;
@@ -55,7 +55,7 @@ namespace TN.NFC.Core.MifareCore
             return getBytes(fString, ' ');
         }
 
-        internal static Int32 byteToInt(byte[] data, bool isLittleEndian)
+        public static Int32 byteToInt(byte[] data, bool isLittleEndian)
         {
             byte[] tmpArry = new byte[data.Length];
             Array.Copy(data, tmpArry, tmpArry.Length);
@@ -78,12 +78,12 @@ namespace TN.NFC.Core.MifareCore
                 return (tmpArry[0] << 24) + (tmpArry[1] << 16) + (tmpArry[2] << 8) + tmpArry[3];
         }
 
-        internal static int byteToInt(byte[] data)
+        public static int byteToInt(byte[] data)
         {
             return byteToInt(data, false);
         }
 
-        internal static byte[] intToByte(int nummber)
+        public static byte[] intToByte(int nummber)
         {
             byte[] tmpByte = new byte[4];
 
@@ -95,7 +95,7 @@ namespace TN.NFC.Core.MifareCore
             return tmpByte;
         }
 
-        internal static byte[] intToByte(UInt32 number)
+        public static byte[] intToByte(UInt32 number)
         {
             byte[] tmpByte = new byte[4];
 
@@ -107,7 +107,7 @@ namespace TN.NFC.Core.MifareCore
             return tmpByte;
         }
 
-        internal static string byteAsString(byte[] bytes, int startIndex, int length, bool spaceInBetween)
+        public static string byteAsString(byte[] bytes, int startIndex, int length, bool spaceInBetween)
         {
             byte[] newByte;
 
@@ -120,7 +120,7 @@ namespace TN.NFC.Core.MifareCore
             return byteAsString(newByte, spaceInBetween);
         }
 
-        internal static string byteAsString(byte[] tmpbytes, bool spaceInBetween)
+        public static string byteAsString(byte[] tmpbytes, bool spaceInBetween)
         {
             string tmpStr = string.Empty;
 
@@ -138,7 +138,7 @@ namespace TN.NFC.Core.MifareCore
             return tmpStr;
         }
 
-        internal static bool byteArrayIsEqual(byte[] array1, byte[] array2, int lenght)
+        public static bool byteArrayIsEqual(byte[] array1, byte[] array2, int lenght)
         {
             if (array1.Length < lenght)
                 return false;
@@ -156,12 +156,12 @@ namespace TN.NFC.Core.MifareCore
             return true;
         }
 
-        internal static bool byteArrayIsEqual(byte[] array1, byte[] array2)
+        public static bool byteArrayIsEqual(byte[] array1, byte[] array2)
         {
             return byteArrayIsEqual(array1, array2, array2.Length);
         }
 
-        internal static byte[] appendArrays(byte[] array1, byte[] array2)
+        public static byte[] appendArrays(byte[] array1, byte[] array2)
         {
             byte[] c = new byte[array1.Length + array2.Length];
             Buffer.BlockCopy(array1, 0, c, 0, array1.Length);
@@ -169,7 +169,7 @@ namespace TN.NFC.Core.MifareCore
             return c;
         }
 
-        internal static byte[] appendArrays(byte[] array1, byte array2)
+        public static byte[] appendArrays(byte[] array1, byte array2)
         {
             byte[] c = new byte[1 + array1.Length];
             Buffer.BlockCopy(array1, 0, c, 0, array1.Length);
@@ -177,7 +177,7 @@ namespace TN.NFC.Core.MifareCore
             return c;
         }
 
-        internal static String byteArrayToString(byte[] data)
+        public static String byteArrayToString(byte[] data)
         {
             String str = "";
 

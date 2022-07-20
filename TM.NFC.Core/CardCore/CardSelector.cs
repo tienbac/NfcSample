@@ -8,16 +8,16 @@ using TN.NFC.Core.PcscCore;
 
 namespace TN.NFC.Core.CardCore
 {
-    internal class CardSelector
+    public class CardSelector
     {
 		private PcscReader pcscReader_;
-		internal PcscReader pcscReader
+		public PcscReader pcscReader
 		{
 			get { return this.pcscReader_; }
 			set { this.pcscReader_ = value; }
 		}
 
-		internal string readCardType(byte[] atr, byte atrLen)
+		public string readCardType(byte[] atr, byte atrLen)
 		{
 			byte[] aRid = new byte[] { 0xA0, 0x00, 0x00, 0x03, 0x06 };
 			byte[] aCardIdentifier = new byte[2];

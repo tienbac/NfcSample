@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TN.NFC.Core.PcscCore
 {
-    internal class PcscException : Exception
+    public class PcscException : Exception
     {
         private int _errorCode;
-        internal int errorCode
+        public int errorCode
         {
             get { return _errorCode; }
         }
@@ -17,13 +17,13 @@ namespace TN.NFC.Core.PcscCore
         private string _message;
         public override string Message => _message;
 
-        internal PcscException(int errCode)
+        public PcscException(int errCode)
         {
             _errorCode = errCode;
             _message = PcscProvider.GetScardErrMsg(errCode);
         }
 
-        internal PcscException(string message)
+        public PcscException(string message)
         {
             _message = message;
         }

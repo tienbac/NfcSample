@@ -8,10 +8,10 @@ using TN.NFC.Core.PcscCore;
 
 namespace TN.NFC.Core.CardCore
 {
-    internal delegate void CardStatusChangeDelegate(object sender, CardPollingEventArg e);
-    internal delegate void CardPollingErrorDelegate(object sender, CardPollingErrorEventArg e);
+    public delegate void CardStatusChangeDelegate(object sender, CardPollingEventArg e);
+    public delegate void CardPollingErrorDelegate(object sender, CardPollingErrorEventArg e);
 
-    internal enum CARD_STATUS
+    public enum CARD_STATUS
     {
         UNKNOWN = 0,
         CARD_FOUND = 1,
@@ -19,64 +19,64 @@ namespace TN.NFC.Core.CardCore
         ERROR = 3
     }
 
-    internal class CardPollingEventArg : EventArgs
+    public class CardPollingEventArg : EventArgs
     {
         private string _reader;
         private CARD_STATUS _status;
         private byte[] _atr;
-        internal int _currentStatus;
+        public int _currentStatus;
 
-        internal string reader
+        public string reader
         {
             get => this._reader;
             set => this._reader = value;
         }
 
-        internal CARD_STATUS status
+        public CARD_STATUS status
         {
             get => this._status;
             set => this._status = value;
         }
 
-        internal int currentStatus
+        public int currentStatus
         {
             get => this._currentStatus;
             set => this._currentStatus = value;
         }
 
-        internal byte[] atr
+        public byte[] atr
         {
             get => this._atr;
             set => this._atr = value;
         }
     }
 
-    internal class CardPollingErrorEventArg : EventArgs
+    public class CardPollingErrorEventArg : EventArgs
     {
         private string _reader;
         private string _errorMessage;
         private int _errorCode;
 
-        internal string reader
+        public string reader
         {
             get => this._reader;
             set => this._reader = value;
         }
 
-        internal string errorMessage
+        public string errorMessage
         {
             get => this._errorMessage;
             set => this._errorMessage = value;
         }
 
-        internal int errorCode
+        public int errorCode
         {
             get => this._errorCode;
             set => this._errorCode = value;
         }
     }
 
-    internal class CardPolling
+    public class CardPolling
     {
         bool _doCardPolling = false;
         object _threadpollStatusLock = new object();
@@ -84,11 +84,11 @@ namespace TN.NFC.Core.CardCore
         Dictionary<string, BackgroundWorker> _threadPoll = null;
         Dictionary<string, CARD_STATUS> _threadPollCardStatus = null;
 
-        internal event CardStatusChangeDelegate OnCardFound = delegate { };
-        internal event CardStatusChangeDelegate OnCardRemoved = delegate { };
-        internal event CardPollingErrorDelegate OnError = delegate { };
+        public event CardStatusChangeDelegate OnCardFound = delegate { };
+        public event CardStatusChangeDelegate OnCardRemoved = delegate { };
+        public event CardPollingErrorDelegate OnError = delegate { };
 
-        internal bool isBusy()
+        public bool isBusy()
         {
             if (_threadPoll == null)
                 return false;
@@ -102,7 +102,7 @@ namespace TN.NFC.Core.CardCore
             return false;
         }
 
-        internal void add(string readerName)
+        public void add(string readerName)
         {
             if (_doCardPolling)
             {
@@ -116,7 +116,7 @@ namespace TN.NFC.Core.CardCore
                 _readers.Add(readerName);
         }
 
-        internal void start(String reader)
+        public void start(String reader)
         {
             if (_doCardPolling)
             {
@@ -248,7 +248,7 @@ namespace TN.NFC.Core.CardCore
             }
         }
 
-        internal void stop()
+        public void stop()
         {
             if (_threadPoll == null)
                 return;
@@ -259,7 +259,7 @@ namespace TN.NFC.Core.CardCore
             _doCardPolling = false;
         }
 
-        internal CARD_STATUS getCardStatus(string readername)
+        public CARD_STATUS getCardStatus(string readername)
         {
             try
             {

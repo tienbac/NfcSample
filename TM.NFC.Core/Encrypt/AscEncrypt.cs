@@ -5,14 +5,18 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using TN.NFC.Core.Entity;
 
 namespace TN.NFC.Core.Encrypt
 {
     public class AscEncrypt
     {
+        private HexData hexData = new HexData();
         public byte[] EncryptStringToBytes_Aes(string plainText, string key)
         {
             var Key = Encoding.ASCII.GetBytes(key);
+            //var hex = hexData.ASCIIToHexadecimal(plainText);
+
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
             if (Key == null || Key.Length <= 0)
@@ -45,7 +49,7 @@ namespace TN.NFC.Core.Encrypt
             return encrypted;
         }
 
-        public string DecryptStringFromBytes_Aes(byte[] cipherText, string key)
+        public VehicleData DecryptStringFromBytes_Aes(byte[] cipherText, string key)
         {
             var Key = Encoding.ASCII.GetBytes(key);
             if (cipherText == null || cipherText.Length <= 0)
@@ -76,7 +80,9 @@ namespace TN.NFC.Core.Encrypt
                 }
             }
 
-            return plaintext;
+            //var result = hexData.HexadecimalToASCII(plaintext);
+
+            return new VehicleData(plaintext);
         }
     }
 }

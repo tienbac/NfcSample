@@ -10,7 +10,7 @@ using TN.NFC.Core.PcscCore;
 
 namespace TN.NFC.Core
 {
-    public class NFC
+    internal class NFC
     {
         private PcscReader _pcscReader = new PcscReader();
         private CardPolling _cardPolling;
@@ -57,27 +57,31 @@ namespace TN.NFC.Core
             }
             catch (PcscException pcscException)
             {
-                //
+                RESPONSE = new Response("0000000000000000", StatusResponse.NotOk, pcscException.Message, null);
             }
             catch (Exception generalException)
             {
-                //
+                RESPONSE = new Response("0000000000000000", StatusResponse.NotOk, generalException.Message, null);
             }
         }
 
-        internal void cardPolling_OnCardRemoved(object sender, CardPollingEventArg e)
+        public void cardPolling_OnCardRemoved(object sender, CardPollingEventArg e)
         {
             Console.WriteLine("Card is removed");
+            Console.WriteLine($"{e.status} | {e.reader} | {e.atr} | {e.currentStatus} | {e._currentStatus}");
+            RESPONSE = new Response("0000000000000000", StatusResponse.NotOk, "Card is removed !", null);
         }
 
-        internal void cardPolling_OnError(object sender, CardPollingErrorEventArg e)
+        public void cardPolling_OnError(object sender, CardPollingErrorEventArg e)
         {
             _cardPolling.stop();
 
             Console.WriteLine(e.errorMessage);
+
+            RESPONSE = new Response("0000000000000000", StatusResponse.NotOk, "Card is removed !", null);
         }
 
-        internal void cardPolling_OnCardFound(object sender, CardPollingEventArg e)
+        public void cardPolling_OnCardFound(object sender, CardPollingEventArg e)
         {
             CardSelector cardSelector = new CardSelector();
             string cardName = "";
@@ -139,7 +143,7 @@ namespace TN.NFC.Core
                 var keyString = "FF FF FF FF FF FF";
                 var isKeyB = false;
                 byte blockLength = 16;
-                var ReadData = "";
+                byte[] ReadData = new byte[16];
 
                 var blockNum = Convert.ToByte(4);
                 var startBlock = Convert.ToByte(4);

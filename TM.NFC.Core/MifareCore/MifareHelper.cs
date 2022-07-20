@@ -8,7 +8,7 @@ using TN.NFC.Core.PcscCore;
 
 namespace TN.NFC.Core.MifareCore
 {
-    internal class MifareHelper
+    public class MifareHelper
     {
         private static ReaderFunctions readerFunctions_;
         private static MifareClassic mifareClassic_;
@@ -122,7 +122,7 @@ namespace TN.NFC.Core.MifareCore
             }
         }
 
-        internal static String byteArrayToString(byte[] data)
+        public static String byteArrayToString(byte[] data)
         {
             String str = "";
 
@@ -172,6 +172,49 @@ namespace TN.NFC.Core.MifareCore
             {
                 //logger_.Error(generalException.Message);
                 ReadValue = "";
+                return -1;
+            }
+        }
+
+        private int BinRead(byte startBlock, byte lengthBlock, out byte[] ReadValue)
+        {
+            byte[] tempStr;
+
+            try
+            {
+                //Validate Inputs
+                if (lengthBlock > _maximumBlock)
+                {
+                    //logger_.Error("Please key-in valid Start Block. Valid value: 0 - " + _maximumBlock.ToString() + ".");
+                    ReadValue = null;
+                    return -1;
+                }
+
+                //logger_.Info("Read Binary");
+
+                tempStr = mifareClassic_.readBinary(startBlock, lengthBlock);
+                //ReadValue = byteArrayToString(tempStr);
+                ReadValue = tempStr;
+                //logger_.Info("Read success");
+
+                return 1;
+            }
+            catch (CardException cardException)
+            {
+                //logger_.Error("[" + Helper.byteAsString(cardException.statusWord, true) + "] " + cardException.Message);
+                ReadValue = null;
+                return -1;
+            }
+            catch (PcscException pcscException)
+            {
+                //logger_.Error("[" + pcscException.errorCode.ToString() + "] " + pcscException.Message);
+                ReadValue = null;
+                return -1;
+            }
+            catch (Exception generalException)
+            {
+                //logger_.Error(generalException.Message);
+                ReadValue = null;
                 return -1;
             }
         }
@@ -239,7 +282,7 @@ namespace TN.NFC.Core.MifareCore
             }
         }
 
-        internal int ReadDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, byte readLength, out string ReadData)
+        public int ReadDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, byte readLength, out byte[] ReadData)
         {
             try
             {
@@ -250,7 +293,7 @@ namespace TN.NFC.Core.MifareCore
                     if (retConnect < 0)
                     {
                         //logger_.Error("Error to connect reader = " + ReaderName);
-                        ReadData = "";
+                        ReadData = null;
                         return -1;
                     }
                 }
@@ -259,7 +302,7 @@ namespace TN.NFC.Core.MifareCore
                 if (retLoadKey < 0)
                 {
                     //logger_.Error("Error to load key !");
-                    ReadData = "";
+                    ReadData = null;
                     return -1;
                 }
                 // authenticate
@@ -267,16 +310,17 @@ namespace TN.NFC.Core.MifareCore
                 if (retAuth < 0)
                 {
                     //logger_.Error("Error to authenticate !");
-                    ReadData = "";
+                    ReadData = null;
                     return -1;
                 }
                 // read data
-                string ReadOut = "";
-                var retRead = BinRead(startBlock, readLength, out ReadOut);
+                //string ReadOut = "";
+                //var retRead = BinRead(startBlock, readLength, out ReadOut);
+                var retRead = BinRead(startBlock, readLength, out byte[] ReadOut);
                 if (retRead < 0)
                 {
                     //logger_.Error("Error to read data !");
-                    ReadData = "";
+                    ReadData = null;
                     return -1;
                 }
                 else
@@ -288,13 +332,119 @@ namespace TN.NFC.Core.MifareCore
             {
                 //logger_.Error(ex.Message);
                 //logger_.Error(ex.StackTrace);
-                ReadData = "";
+                ReadData = null;
             }
 
             return 1;
         }
 
-        internal int WriteDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, string WriteData)
+        public int ReadDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, byte readLength, out string ReadData)
+        {
+            try
+            {
+                // Connect reader
+                if (!readerConnect_)
+                {
+                    var retConnect = Connect(ReaderName);
+                    if (retConnect < 0)
+                    {
+                        //logger_.Error("Error to connect reader = " + ReaderName);
+                        ReadData = null;
+                        return -1;
+                    }
+                }
+                // load key
+                var retLoadKey = LoadKey(keyNum, keyString);
+                if (retLoadKey < 0)
+                {
+                    //logger_.Error("Error to load key !");
+                    ReadData = null;
+                    return -1;
+                }
+                // authenticate
+                var retAuth = Auth(keyNum, blockNumber, isKeyB);
+                if (retAuth < 0)
+                {
+                    //logger_.Error("Error to authenticate !");
+                    ReadData = null;
+                    return -1;
+                }
+                // read data
+                string ReadOut = "";
+                var retRead = BinRead(startBlock, readLength, out ReadOut);
+                if (retRead < 0)
+                {
+                    //logger_.Error("Error to read data !");
+                    ReadData = null;
+                    return -1;
+                }
+                else
+                {
+                    ReadData = ReadOut;
+                }
+            }
+            catch (Exception ex)
+            {
+                //logger_.Error(ex.Message);
+                //logger_.Error(ex.StackTrace);
+                ReadData = null;
+            }
+
+            return 1;
+        }
+
+        public int WriteDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, string WriteData)
+        {
+            try
+            {
+                // Connect reader
+                if (!readerConnect_)
+                {
+                    var retConnect = Connect(ReaderName);
+                    if (retConnect < 0)
+                    {
+                        //logger_.Error("Error to connect reader = " + ReaderName);
+                        return -1;
+                    }
+                }
+                // load key
+                var retLoadKey = LoadKey(keyNum, keyString);
+                if (retLoadKey < 0)
+                {
+                    //logger_.Error("Error to load key !");
+                    return -1;
+                }
+                // authenticate
+                var retAuth = Auth(keyNum, blockNumber, isKeyB);
+                if (retAuth < 0)
+                {
+                    //logger_.Error("Error to authenticate !");
+                    return -1;
+                }
+                // write data
+                int length = WriteData.Length;
+                var retWrite = BinUpd(startBlock, length, WriteData);
+                if (retWrite < 0)
+                {
+                    //logger_.Error("Error to write data !");
+                    return -1;
+                }
+                else
+                {
+                    //logger_.Error("Success to write data !");
+                    return 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                //logger_.Error(ex.Message);
+                //logger_.Error(ex.StackTrace);
+
+                return -1;
+            }
+        }
+
+        public int WriteDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, byte[] WriteData)
         {
             try
             {
@@ -390,6 +540,80 @@ namespace TN.NFC.Core.MifareCore
                 byte[] buff = new byte[16];
                 tmpStr = WriteData;
                 buff = Encoding.ASCII.GetBytes(tmpStr);
+
+                if (buff.Length < 16)
+                    Array.Resize(ref buff, 16);
+
+                //logger_.Info("Update Binary");
+
+                mifareClassic_.updateBinary((byte)startBlock, buff, (byte)length);
+                //logger_.Info("Update success");
+
+                return 1;
+
+            }
+            catch (CardException cardException)
+            {
+                //logger_.Error("[" + Helper.byteAsString(cardException.statusWord, true) + "] " + cardException.Message);
+
+                return -1;
+            }
+            catch (PcscException pcscException)
+            {
+                //logger_.Error("[" + pcscException.errorCode.ToString() + "] " + pcscException.Message);
+
+                return -1;
+            }
+            catch (Exception generalException)
+            {
+                //logger_.Error(generalException.Message);
+
+                return -1;
+            }
+        }
+
+        private int BinUpd(int startBlock, int length, byte[] WriteData)
+        {
+            try
+            {
+                if (startBlock > _maximumBlock)
+                {
+                    //logger_.Error("Please key-in valid Start Block. Valid value: 0 - " + _maximumBlock.ToString() + ".");
+                    return -1;
+                }
+
+                if (startBlock <= 127)
+                {
+                    if ((startBlock + 1) % 4 == 0)
+                    {
+                        //logger_.Error("The block to be updated is a sector trailer. Please change the Start Block Number.");
+                        return -1;
+                    }
+                }
+
+                if (startBlock > 127)
+                {
+                    if ((startBlock + 1) % 16 == 0)
+                    {
+                        //logger_.Error("The block to be updated is a sector trailer. Please change the Start Block Number.");
+                        return -1;
+                    }
+                }
+
+                if (length != 16 || length == 0)
+                {
+                    //logger_.Error("Invalid Length. Length must be 16.");
+                    return -1;
+                }
+
+                if (WriteData == null)
+                {
+                    //logger_.Error("Please key-in the data to write.");
+                    return -1;
+                }
+
+                byte[] buff = new byte[16];
+                buff = WriteData;
 
                 if (buff.Length < 16)
                     Array.Resize(ref buff, 16);
