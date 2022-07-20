@@ -5,17 +5,32 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TM.NFC.Core.Entity
+namespace TN.NFC.Core.Entity
 {
-    internal enum StatusResponse
+    public enum StatusResponse
     {
         OK = 1,
         NotOk = 0
     }
 
-    internal class Response
+    public class Response
     {
-        public StatusResponse Status { get; set; }
-        public string ErrorMessage { get; set; }
+        internal string Imei { get; set; }
+        internal StatusResponse Status { get; set; }
+        internal string ErrorMessage { get; set; }
+        internal VehicleData VehicleData { get; set; }
+
+        public Response()
+        {
+            
+        }
+
+        public Response(string imei, StatusResponse status, string errorMessage, VehicleData vehicleData)
+        {
+            Imei = imei;
+            Status = status;
+            ErrorMessage = errorMessage;
+            VehicleData = vehicleData;
+        }
     }
 }

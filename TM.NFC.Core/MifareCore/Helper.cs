@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TM.NFC.Core.MifareCore
+namespace TN.NFC.Core.MifareCore
 {
     internal class Helper
     {
-        public static byte[] getBytes(string stringBytes, char delimeter)
+        internal static byte[] getBytes(string stringBytes, char delimeter)
         {
             string[] arrayString = stringBytes.Split(delimeter);
             byte[] bytesResult = new byte[arrayString.Length];
@@ -30,7 +30,7 @@ namespace TM.NFC.Core.MifareCore
             return bytesResult;
         }
 
-        public static byte[] getBytes(string stringBytes)
+        internal static byte[] getBytes(string stringBytes)
         {
             string fString = "";
             int counter = 0;
@@ -55,7 +55,7 @@ namespace TM.NFC.Core.MifareCore
             return getBytes(fString, ' ');
         }
 
-        public static Int32 byteToInt(byte[] data, bool isLittleEndian)
+        internal static Int32 byteToInt(byte[] data, bool isLittleEndian)
         {
             byte[] tmpArry = new byte[data.Length];
             Array.Copy(data, tmpArry, tmpArry.Length);
@@ -78,12 +78,12 @@ namespace TM.NFC.Core.MifareCore
                 return (tmpArry[0] << 24) + (tmpArry[1] << 16) + (tmpArry[2] << 8) + tmpArry[3];
         }
 
-        public static int byteToInt(byte[] data)
+        internal static int byteToInt(byte[] data)
         {
             return byteToInt(data, false);
         }
 
-        public static byte[] intToByte(int nummber)
+        internal static byte[] intToByte(int nummber)
         {
             byte[] tmpByte = new byte[4];
 
@@ -95,7 +95,7 @@ namespace TM.NFC.Core.MifareCore
             return tmpByte;
         }
 
-        public static byte[] intToByte(UInt32 number)
+        internal static byte[] intToByte(UInt32 number)
         {
             byte[] tmpByte = new byte[4];
 
@@ -107,7 +107,7 @@ namespace TM.NFC.Core.MifareCore
             return tmpByte;
         }
 
-        public static string byteAsString(byte[] bytes, int startIndex, int length, bool spaceInBetween)
+        internal static string byteAsString(byte[] bytes, int startIndex, int length, bool spaceInBetween)
         {
             byte[] newByte;
 
@@ -120,7 +120,7 @@ namespace TM.NFC.Core.MifareCore
             return byteAsString(newByte, spaceInBetween);
         }
 
-        public static string byteAsString(byte[] tmpbytes, bool spaceInBetween)
+        internal static string byteAsString(byte[] tmpbytes, bool spaceInBetween)
         {
             string tmpStr = string.Empty;
 
@@ -138,7 +138,7 @@ namespace TM.NFC.Core.MifareCore
             return tmpStr;
         }
 
-        public static bool byteArrayIsEqual(byte[] array1, byte[] array2, int lenght)
+        internal static bool byteArrayIsEqual(byte[] array1, byte[] array2, int lenght)
         {
             if (array1.Length < lenght)
                 return false;
@@ -156,12 +156,12 @@ namespace TM.NFC.Core.MifareCore
             return true;
         }
 
-        public static bool byteArrayIsEqual(byte[] array1, byte[] array2)
+        internal static bool byteArrayIsEqual(byte[] array1, byte[] array2)
         {
             return byteArrayIsEqual(array1, array2, array2.Length);
         }
 
-        public static byte[] appendArrays(byte[] array1, byte[] array2)
+        internal static byte[] appendArrays(byte[] array1, byte[] array2)
         {
             byte[] c = new byte[array1.Length + array2.Length];
             Buffer.BlockCopy(array1, 0, c, 0, array1.Length);
@@ -169,7 +169,7 @@ namespace TM.NFC.Core.MifareCore
             return c;
         }
 
-        public static byte[] appendArrays(byte[] array1, byte array2)
+        internal static byte[] appendArrays(byte[] array1, byte array2)
         {
             byte[] c = new byte[1 + array1.Length];
             Buffer.BlockCopy(array1, 0, c, 0, array1.Length);
@@ -177,7 +177,7 @@ namespace TM.NFC.Core.MifareCore
             return c;
         }
 
-        public static String byteArrayToString(byte[] data)
+        internal static String byteArrayToString(byte[] data)
         {
             String str = "";
 

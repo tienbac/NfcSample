@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TM.NFC.Core.MifareCore;
-using TM.NFC.Core.PcscCore;
+using TN.NFC.Core.MifareCore;
+using TN.NFC.Core.PcscCore;
 
-namespace TM.NFC.Core.CardCore
+namespace TN.NFC.Core.CardCore
 {
     internal enum KEY_STRUCTURE
     {
@@ -21,7 +21,7 @@ namespace TM.NFC.Core.CardCore
     }
     internal class ReaderFunctions : PcscReader
     {
-        public byte[] getCardSerialNumber()
+        internal byte[] getCardSerialNumber()
         {
             byte[] cardSerial;
 
@@ -44,7 +44,7 @@ namespace TM.NFC.Core.CardCore
 
         }
 
-        public byte[] getAnswerToSelect()
+        internal byte[] getAnswerToSelect()
         {
             apduCommand = new Apdu();
             apduCommand.setCommand(new byte[] {  0xFF,
@@ -63,7 +63,7 @@ namespace TM.NFC.Core.CardCore
             return apduCommand.response;
         }
 
-        public void loadAuthKey(KEY_STRUCTURE keyStructure, byte keyNumber, byte[] key)
+        internal void loadAuthKey(KEY_STRUCTURE keyStructure, byte keyNumber, byte[] key)
         {
 
             if (key.Length != 6)
@@ -87,7 +87,7 @@ namespace TM.NFC.Core.CardCore
 
         }
 
-        public void authenticate(byte blockNumber, KEYTYPES keyType, byte KeyNumber)
+        internal void authenticate(byte blockNumber, KEYTYPES keyType, byte KeyNumber)
         {
             if (KeyNumber < 0x00 && KeyNumber > 0x20)
                 throw new Exception("Key number is invalid");

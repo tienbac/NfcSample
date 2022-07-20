@@ -7,8 +7,8 @@
     <ProjectGuid>{303097AF-2561-45A2-A62F-9AB374D56D2E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TM.NFC.Core</RootNamespace>
-    <AssemblyName>TM.NFC.Core</AssemblyName>
+    <RootNamespace>TN.NFC.Core</RootNamespace>
+    <AssemblyName>TN.NFC.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

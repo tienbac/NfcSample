@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32616.157
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NfcSample", "NfcSample.csproj", "{C13656DE-31F8-4AA7-B122-052E8AE8F424}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM.NFC.Core", "..\..\TM.NFC.Core\TM.NFC.Core\TM.NFC.Core.csproj", "{303097AF-2561-45A2-A62F-9AB374D56D2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TN.NFC.Core", "..\TM.NFC.Core\TN.NFC.Core.csproj", "{303097AF-2561-45A2-A62F-9AB374D56D2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

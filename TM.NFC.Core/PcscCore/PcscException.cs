@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TM.NFC.Core.PcscCore
+namespace TN.NFC.Core.PcscCore
 {
     internal class PcscException : Exception
     {
         private int _errorCode;
-        public int errorCode
+        internal int errorCode
         {
             get { return _errorCode; }
         }
@@ -17,13 +17,13 @@ namespace TM.NFC.Core.PcscCore
         private string _message;
         public override string Message => _message;
 
-        public PcscException(int errCode)
+        internal PcscException(int errCode)
         {
             _errorCode = errCode;
             _message = PcscProvider.GetScardErrMsg(errCode);
         }
 
-        public PcscException(string message)
+        internal PcscException(string message)
         {
             _message = message;
         }

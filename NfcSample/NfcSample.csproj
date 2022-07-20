@@ -80,6 +80,11 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TM.NFC.Core\TN.NFC.Core.csproj">
+      <Project>{303097af-2561-45a2-a62f-9ab374d56d2e}</Project>
+      <Name>TN.NFC.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

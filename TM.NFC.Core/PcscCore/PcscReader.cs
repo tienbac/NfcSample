@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TM.NFC.Core.MifareCore;
+using TN.NFC.Core.MifareCore;
 
-namespace TM.NFC.Core.PcscCore
+namespace TN.NFC.Core.PcscCore
 {
     internal delegate void TransmitApduDelegate(object sender, TransmitApduEventArg e);
 
-    public class TransmitApduEventArg : EventArgs
+    internal class TransmitApduEventArg : EventArgs
     {
         private byte[] data_;
-        public byte[] data
+        internal byte[] data
         {
             get => data_;
             set => data_ = value;
         }
 
-        public TransmitApduEventArg(byte[] data)
+        internal TransmitApduEventArg(byte[] data)
         {
             data_ = data;
         }
 
-        public string GetAsString(bool spaceinBetween)
+        internal string GetAsString(bool spaceinBetween)
         {
             if (data_ == null)
                 return "";
@@ -51,68 +51,68 @@ namespace TM.NFC.Core.PcscCore
         private int lastError = 0;
         private Apdu _apduCommand = new Apdu();
 
-        public event TransmitApduDelegate OnSendCommand;
-        public event TransmitApduDelegate OnReceivedCommand;
+        internal event TransmitApduDelegate OnSendCommand;
+        internal event TransmitApduDelegate OnReceivedCommand;
 
-        public PcscReader()
+        internal PcscReader()
         {
             establishContext();
         }
 
-        public PcscReader(string readerName)
+        internal PcscReader(string readerName)
         {
             _readerName = readerName;
             establishContext();
         }
 
-        public IntPtr cardHandle
+        internal IntPtr cardHandle
         {
             get { return hCard_; }
             set { hCard_ = value; }
         }
 
-        public IntPtr resourceMngrContext
+        internal IntPtr resourceMngrContext
         {
             get { return hContext_; }
             set { hContext_ = value; }
         }
 
-        public int preferedProtocol
+        internal int preferedProtocol
         {
             get { return pProtocol_; }
             set { pProtocol_ = value; }
         }
 
-        public int activeProtocol
+        internal int activeProtocol
         {
             get { return pdwActiveProtocol_; }
             set { pdwActiveProtocol_ = value; }
         }
 
-        public int shareMode
+        internal int shareMode
         {
             get { return shareMode_; }
             set { shareMode_ = value; }
         }
 
-        public string readerName
+        internal string readerName
         {
             get { return _readerName; }
             set { _readerName = value; }
         }
 
-        public Apdu apduCommand
+        internal Apdu apduCommand
         {
             get { return _apduCommand; }
             set { _apduCommand = value; }
         }
 
-        public PcscReader pcscConnection
+        internal PcscReader pcscConnection
         {
             get { return this; }
         }
 
-        public uint operationControlCode
+        internal uint operationControlCode
         {
             get { return _operationControlCode; }
             set { _operationControlCode = value; }
@@ -143,7 +143,7 @@ namespace TM.NFC.Core.PcscCore
 
         #endregion
 
-        public void connect()
+        internal void connect()
         {
             if (_readerName.Trim() == "")
                 throw new Exception("Smartacard reader is not specified");
@@ -151,13 +151,13 @@ namespace TM.NFC.Core.PcscCore
             connect(_readerName, pProtocol_, shareMode_);
         }
 
-        public void connect(string readerName)
+        internal void connect(string readerName)
         {
             _readerName = readerName;
             connect(_readerName, pProtocol_, shareMode_);
         }
 
-        public void connect(string readerName, int preferedProtocol, int shareMode)
+        internal void connect(string readerName, int preferedProtocol, int shareMode)
         {
             int returnCode;
 
@@ -174,12 +174,12 @@ namespace TM.NFC.Core.PcscCore
             _readerName = readerName;
         }
 
-        public void connectDirect()
+        internal void connectDirect()
         {
             connect(readerName, PcscProvider.SCARD_PROTOCOL_UNDEFINED, PcscProvider.SCARD_SHARE_DIRECT);
         }
 
-        public void getStatusChange(ref byte[] atr)
+        internal void getStatusChange(ref byte[] atr)
         {
             int returnCode;
 
@@ -196,7 +196,7 @@ namespace TM.NFC.Core.PcscCore
             atr = state.rgbAtr;
         }
 
-        public string[] getReaderList()
+        internal string[] getReaderList()
         {
             byte[] returnData;
             byte[] sReaderGroup = null;
@@ -232,7 +232,7 @@ namespace TM.NFC.Core.PcscCore
             return readerList;
         }
 
-        public void disconnect()
+        internal void disconnect()
         {
             int returnValue = PcscProvider.SCardDisconnect(hCard_, PcscProvider.SCARD_UNPOWER_CARD);
             if (returnValue != PcscProvider.SCARD_S_SUCCESS)
@@ -241,14 +241,14 @@ namespace TM.NFC.Core.PcscCore
             releaseContext();
         }
 
-        public void sendCommand(ref Apdu apdu)
+        internal void sendCommand(ref Apdu apdu)
         {
             apduCommand = apdu;
             sendCommand();
             apdu = apduCommand;
         }
 
-        public void sendCommand()
+        internal void sendCommand()
         {
             byte[] sendBuff, recvBuff;
             int sendLen, recvLen, returnCode;
@@ -302,7 +302,7 @@ namespace TM.NFC.Core.PcscCore
             }
         }
 
-        public void sendCardControl(ref Apdu apdu, uint controlCode)
+        internal void sendCardControl(ref Apdu apdu, uint controlCode)
         {
             apduCommand = apdu;
             operationControlCode = controlCode;
@@ -310,7 +310,7 @@ namespace TM.NFC.Core.PcscCore
             apdu = apduCommand;
         }
 
-        public void sendCardControl()
+        internal void sendCardControl()
         {
             byte[] sendBuff, recvbuff;
             int sendLen, recvLen, returnCode, actualLength = 0;
@@ -366,7 +366,7 @@ namespace TM.NFC.Core.PcscCore
 
         }
 
-        public virtual byte[] getFirmwareVersion()
+        internal virtual byte[] getFirmwareVersion()
         {
             throw new NotImplementedException();
         }

@@ -3,38 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TM.NFC.Core.CardCore;
-using TM.NFC.Core.PcscCore;
+using TN.NFC.Core.CardCore;
+using TN.NFC.Core.PcscCore;
 
-namespace TM.NFC.Core.MifareCore
+namespace TN.NFC.Core.MifareCore
 {
     internal class MifareClassic
     {
-        public enum VALUEBLOCKOPERATION
+        internal enum VALUEBLOCKOPERATION
         {
             STORE = 0,
             INCREMENT = 1,
             DECREMENT = 2,
         }
 
-        public MifareClassic(string readerName)
+        internal MifareClassic(string readerName)
         {
             _pcscConnection = new PcscReader(readerName);
         }
 
-        public MifareClassic(PcscReader pcsc)
+        internal MifareClassic(PcscReader pcsc)
         {
             _pcscConnection = pcsc;
         }
 
         private PcscReader _pcscConnection;
-        public PcscReader pcscConnection
+        internal PcscReader pcscConnection
         {
             get { return _pcscConnection; }
             set { _pcscConnection = value; }
         }
 
-        public void valueBlock(byte blockNumber, VALUEBLOCKOPERATION transType, int amount)
+        internal void valueBlock(byte blockNumber, VALUEBLOCKOPERATION transType, int amount)
         {
             Apdu apdu;
             apdu = new Apdu();
@@ -50,7 +50,7 @@ namespace TM.NFC.Core.MifareCore
                 throw new CardException("Value block operation failed", apdu.statusWord);
         }
 
-        public byte[] readBinary(byte blockNumber, byte length)
+        internal byte[] readBinary(byte blockNumber, byte length)
         {
             Apdu apdu;
 
@@ -66,7 +66,7 @@ namespace TM.NFC.Core.MifareCore
             return apdu.response.Take(length).ToArray();
         }
 
-        public void updateBinary(byte blockNumber, byte[] data, byte length)
+        internal void updateBinary(byte blockNumber, byte[] data, byte length)
         {
             Apdu apdu;
             int retCode;

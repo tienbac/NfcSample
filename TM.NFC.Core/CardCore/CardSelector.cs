@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TM.NFC.Core.MifareCore;
-using TM.NFC.Core.PcscCore;
+using TN.NFC.Core.MifareCore;
+using TN.NFC.Core.PcscCore;
 
-namespace TM.NFC.Core.CardCore
+namespace TN.NFC.Core.CardCore
 {
     internal class CardSelector
     {
 		private PcscReader pcscReader_;
-		public PcscReader pcscReader
+		internal PcscReader pcscReader
 		{
 			get { return this.pcscReader_; }
 			set { this.pcscReader_ = value; }
 		}
 
-		public string readCardType(byte[] atr, byte atrLen)
+		internal string readCardType(byte[] atr, byte atrLen)
 		{
 			byte[] aRid = new byte[] { 0xA0, 0x00, 0x00, 0x03, 0x06 };
 			byte[] aCardIdentifier = new byte[2];

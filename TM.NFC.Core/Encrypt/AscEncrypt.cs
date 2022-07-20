@@ -6,41 +6,35 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TM.NFC.Core.Encrypt
+namespace TN.NFC.Core.Encrypt
 {
-    internal class AscEncrypt
+    public class AscEncrypt
     {
-        internal byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
+        public byte[] EncryptStringToBytes_Aes(string plainText, string key)
         {
-            // Check arguments.
+            var Key = Encoding.ASCII.GetBytes(key);
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
             if (Key == null || Key.Length <= 0)
                 throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
-                throw new ArgumentNullException("IV");
+
             byte[] encrypted;
 
-            // Create an Aes object
-            // with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = Key;
-                aesAlg.IV = IV;
-                aesAlg.KeySize = 256;
-                aesAlg.BlockSize = 128;
+                aesAlg.IV = Key;
+                aesAlg.Padding = PaddingMode.None;
+                aesAlg.Mode = CipherMode.CBC;
 
-                // Create an encryptor to perform the stream transform.
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
-                // Create the streams used for encryption.
                 using (MemoryStream msEncrypt = new MemoryStream())
                 {
                     using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
                     {
                         using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                         {
-                            //Write all data to the stream.
                             swEncrypt.Write(plainText);
                         }
                         encrypted = msEncrypt.ToArray();
@@ -48,44 +42,34 @@ namespace TM.NFC.Core.Encrypt
                 }
             }
 
-            // Return the encrypted bytes from the memory stream.
             return encrypted;
         }
 
-        internal string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
+        public string DecryptStringFromBytes_Aes(byte[] cipherText, string key)
         {
-            // Check arguments.
+            var Key = Encoding.ASCII.GetBytes(key);
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
             if (Key == null || Key.Length <= 0)
                 throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
-                throw new ArgumentNullException("IV");
-
-            // Declare the string used to hold
-            // the decrypted text.
+           
             string plaintext = null;
 
-            // Create an Aes object
-            // with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = Key;
-                aesAlg.IV = IV;
+                aesAlg.IV = Key;
+                aesAlg.Padding = PaddingMode.None;
+                aesAlg.Mode = CipherMode.CBC;
 
-                // Create a decryptor to perform the stream transform.
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
-                // Create the streams used for decryption.
                 using (MemoryStream msDecrypt = new MemoryStream(cipherText))
                 {
                     using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                     {
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                         {
-
-                            // Read the decrypted bytes from the decrypting stream
-                            // and place them in a string.
                             plaintext = srDecrypt.ReadToEnd();
                         }
                     }

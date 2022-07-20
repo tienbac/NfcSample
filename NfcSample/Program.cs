@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
@@ -19,6 +20,8 @@ namespace NfcSample
         public string LaneInId { get; set; }
         public byte Status { get; set; }
         public byte CardType { get; set; }
+        public DateTime ArriveTime { get; set; } = DateTime.Now;
+        public string Plate { get; set; } = "30H11122";
 
         public Block1()
         {
@@ -35,7 +38,7 @@ namespace NfcSample
 
         public override string ToString()
         {
-            return $"{{\"StationInId\":\"{StationInId}\",\"LaneInId\":\"{LaneInId}\",\"Status\":{Convert.ToByte(Status)},\"CardType\":{Convert.ToByte(CardType)}}}";
+            return $"{{\"StationInId\":\"{StationInId}\",\"LaneInId\":\"{LaneInId}\",\"Status\":{Status},\"CardType\":{CardType},\"ArriveTime\":\"{ArriveTime}\",\"Plate\":\"{Plate}\"}}";
         }
     }
 
@@ -45,80 +48,52 @@ namespace NfcSample
 
         static void Main(string[] args)
         {
-            var data = "1182001000000$$$";
-            var vehicle = new Block1(data);
+            var data = "1182001000000$$$20220711150003$$30H105033$$$$$$$";
 
-            Console.WriteLine(vehicle.ToString());
-            
-            var a = new Process().ASCIIToHexadecimal("1182001000000$$$");
+            char[] separators = new char[] { ' ', ';', ',', '\r', '\t', '\n', '$' };
 
-            string Key = "8UHjPgXZzXCGkhxV2QCnooyJexUzvJrO";
+            string[] temp = data.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            //data = String.Join("\n", temp);
+            //var key = "1234567890123456";
 
-            //var aes = new AesEncrypter(Key);
-            var aesstr = AesEncrypter.Encrypt(a, Key);
+            //var k = Encoding.ASCII.GetBytes(key);
 
-            // var b = AesEncrypter.Encrypt(a, Key);
+            //string original = "Here is some data to encrypt!";
 
-            // var fe = b;
+            //byte[] encrypted = new byte[48];
 
-             var d = AesEncrypter.Decrypt(aesstr, Key);
+            //// Encrypt the string to an array of bytes.
+            //encrypted = EncryptStringToBytes_Aes(data, k);
 
-             var b = "";
+            //// Decrypt the bytes to a string.
+            //string roundtrip = DecryptStringFromBytes_Aes(encrypted, k);
 
-            //var c = new Process().HexadecimalToASCII(d);
+            ////Display the original data and the decrypted data.
+            //Console.WriteLine("Original:   {0}", data);
+            //Console.WriteLine("Round Trip: {0}", roundtrip);
 
-            //var e = "";
+            //var aes = new TN.NFC.Core.Encrypt.AscEncrypt();
+            //var dataHex = aes.EncryptStringToBytes_Aes(data, key);
 
-            //var encrypted = new Byte[128];
-            //var key = new byte[32];
-            //var iv = new byte[16];
+            //var deHex = aes.DecryptStringFromBytes_Aes(dataHex, key);
 
+            //Console.WriteLine(deHex);
 
-            //using (Aes myAes = Aes.Create())
-            //{
-
-            //    // Encrypt the string to an array of bytes.
-            //    byte[] encrypted = EncryptStringToBytes_Aes(a, myAes.Key, myAes.IV);
-
-            //    // Decrypt the bytes to a string.
-            //    string roundtrip = DecryptStringFromBytes_Aes(encrypted, myAes.Key, myAes.IV);
-
-            //    //Display the original data and the decrypted data.
-            //    Console.WriteLine("Original:   {0}", a);
-            //    Console.WriteLine("Round Trip: {0}", roundtrip);
-            //}
-
-
-
-            //using (Aes myAes = Aes.Create())
-            //{
-
-            //    // Encrypt the string to an array of bytes.
-            //    //byte[] encrypted = EncryptStringToBytes_Aes(a, myAes.Key, myAes.IV);
-
-            //    // Decrypt the bytes to a string.
-            //    string roundtrip = DecryptStringFromBytes_Aes(encrypted, key, iv);
-
-            //    //Display the original data and the decrypted data.
-            //    Console.WriteLine("Original:   {0}", a);
-            //    Console.WriteLine("encrypted:   {0}", string.Join(" ", encrypted));
-            //    Console.WriteLine("Round Trip: {0}", roundtrip);
-            //}
+            //new TN.NFC.Core.NFC().Initial();
 
             //new Process2().Initial();
             Console.Read();
 
         }
 
-        static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
+        static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key)
         {
             // Check arguments.
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
             if (Key == null || Key.Length <= 0)
                 throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
-                throw new ArgumentNullException("IV");
+            
             byte[] encrypted;
 
             // Create an Aes object
@@ -126,9 +101,9 @@ namespace NfcSample
             using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = Key;
-                aesAlg.IV = IV;
-                aesAlg.KeySize = 256;
-                aesAlg.BlockSize = 128;
+                aesAlg.IV = Key;
+                aesAlg.Padding = PaddingMode.None;
+                aesAlg.Mode = CipherMode.CBC;
 
                 // Create an encryptor to perform the stream transform.
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
@@ -152,15 +127,15 @@ namespace NfcSample
             return encrypted;
         }
 
-        static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
+        static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key)
         {
             // Check arguments.
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
             if (Key == null || Key.Length <= 0)
                 throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
-                throw new ArgumentNullException("IV");
+            //if (IV == null || IV.Length <= 0)
+            //    throw new ArgumentNullException("IV");
 
             // Declare the string used to hold
             // the decrypted text.
@@ -171,7 +146,9 @@ namespace NfcSample
             using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = Key;
-                aesAlg.IV = IV;
+                aesAlg.IV = Key;
+                aesAlg.Padding = PaddingMode.None;
+                aesAlg.Mode = CipherMode.CBC;
 
                 // Create a decryptor to perform the stream transform.
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);

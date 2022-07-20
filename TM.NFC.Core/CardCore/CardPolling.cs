@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TM.NFC.Core.PcscCore;
+using TN.NFC.Core.PcscCore;
 
-namespace TM.NFC.Core.CardCore
+namespace TN.NFC.Core.CardCore
 {
     internal delegate void CardStatusChangeDelegate(object sender, CardPollingEventArg e);
     internal delegate void CardPollingErrorDelegate(object sender, CardPollingErrorEventArg e);
@@ -26,25 +26,25 @@ namespace TM.NFC.Core.CardCore
         private byte[] _atr;
         internal int _currentStatus;
 
-        public string reader
+        internal string reader
         {
             get => this._reader;
             set => this._reader = value;
         }
 
-        public CARD_STATUS status
+        internal CARD_STATUS status
         {
             get => this._status;
             set => this._status = value;
         }
 
-        public int currentStatus
+        internal int currentStatus
         {
             get => this._currentStatus;
             set => this._currentStatus = value;
         }
 
-        public byte[] atr
+        internal byte[] atr
         {
             get => this._atr;
             set => this._atr = value;
@@ -57,19 +57,19 @@ namespace TM.NFC.Core.CardCore
         private string _errorMessage;
         private int _errorCode;
 
-        public string reader
+        internal string reader
         {
             get => this._reader;
             set => this._reader = value;
         }
 
-        public string errorMessage
+        internal string errorMessage
         {
             get => this._errorMessage;
             set => this._errorMessage = value;
         }
 
-        public int errorCode
+        internal int errorCode
         {
             get => this._errorCode;
             set => this._errorCode = value;
@@ -84,11 +84,11 @@ namespace TM.NFC.Core.CardCore
         Dictionary<string, BackgroundWorker> _threadPoll = null;
         Dictionary<string, CARD_STATUS> _threadPollCardStatus = null;
 
-        public event CardStatusChangeDelegate OnCardFound = delegate { };
-        public event CardStatusChangeDelegate OnCardRemoved = delegate { };
-        public event CardPollingErrorDelegate OnError = delegate { };
+        internal event CardStatusChangeDelegate OnCardFound = delegate { };
+        internal event CardStatusChangeDelegate OnCardRemoved = delegate { };
+        internal event CardPollingErrorDelegate OnError = delegate { };
 
-        public bool isBusy()
+        internal bool isBusy()
         {
             if (_threadPoll == null)
                 return false;
@@ -102,7 +102,7 @@ namespace TM.NFC.Core.CardCore
             return false;
         }
 
-        public void add(string readerName)
+        internal void add(string readerName)
         {
             if (_doCardPolling)
             {
@@ -116,7 +116,7 @@ namespace TM.NFC.Core.CardCore
                 _readers.Add(readerName);
         }
 
-        public void start(String reader)
+        internal void start(String reader)
         {
             if (_doCardPolling)
             {
@@ -248,7 +248,7 @@ namespace TM.NFC.Core.CardCore
             }
         }
 
-        public void stop()
+        internal void stop()
         {
             if (_threadPoll == null)
                 return;
@@ -259,7 +259,7 @@ namespace TM.NFC.Core.CardCore
             _doCardPolling = false;
         }
 
-        public CARD_STATUS getCardStatus(string readername)
+        internal CARD_STATUS getCardStatus(string readername)
         {
             try
             {

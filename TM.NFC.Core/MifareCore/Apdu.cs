@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TM.NFC.Core.MifareCore
+namespace TN.NFC.Core.MifareCore
 {
     internal class Apdu
     {
@@ -20,17 +20,17 @@ namespace TM.NFC.Core.MifareCore
         private byte[] _response;
         private byte[] _statusWord;
 
-        public Apdu()
+        internal Apdu()
         {
 
         }
 
-        public Apdu(byte instructionClass, byte instructionCode, byte param1, byte param2, byte param3)
+        internal Apdu(byte instructionClass, byte instructionCode, byte param1, byte param2, byte param3)
         {
             this.setCommand(new byte[] { instructionClass, instructionCode, param1, param2, param3 });
         }
 
-        public Apdu(byte[] cmd)
+        internal Apdu(byte[] cmd)
         {
             if (cmd.Length != 5)
                 throw new Exception("Invalid command");
@@ -41,7 +41,7 @@ namespace TM.NFC.Core.MifareCore
         /// <summary>
         /// The T=0 instruction class.
         /// </summary>
-        public byte instructionClass
+        internal byte instructionClass
         {
             get { return _instructionClass; }
             set { _instructionClass = value; }
@@ -50,7 +50,7 @@ namespace TM.NFC.Core.MifareCore
         /// <summary>
         /// An instruction code in the T=0 instruction class.
         /// </summary>        
-        public byte instructionCode
+        internal byte instructionCode
         {
             get { return _instructionCode; }
             set { _instructionCode = value; }
@@ -59,7 +59,7 @@ namespace TM.NFC.Core.MifareCore
         /// <summary>
         /// Reference codes that complete the instruction code.
         /// </summary>
-        public byte parameter1
+        internal byte parameter1
         {
             get { return _parameter1; }
             set { _parameter1 = value; }
@@ -68,7 +68,7 @@ namespace TM.NFC.Core.MifareCore
         /// <summary>
         /// Reference codes that complete the instruction code.
         /// </summary>
-        public byte parameter2
+        internal byte parameter2
         {
             get { return _parameter2; }
             set { _parameter2 = value; }
@@ -77,7 +77,7 @@ namespace TM.NFC.Core.MifareCore
         /// <summary>
         /// The number of data bytes to be transmitted during the command, per ISO 7816-4, Section 8.2.1.
         /// </summary>
-        public byte parameter3
+        internal byte parameter3
         {
             get { return _parameter3; }
             set { _parameter3 = value; }
@@ -86,37 +86,37 @@ namespace TM.NFC.Core.MifareCore
         /// <summary>
         /// Length of data expected from the card
         /// </summary>
-        public int lengthExpected
+        internal int lengthExpected
         {
             get { return _lengthExpected; }
             set { _lengthExpected = value; }
         }
 
-        public int actualLengthReceived
+        internal int actualLengthReceived
         {
             get { return _actualLengthReceived; }
             set { _actualLengthReceived = value; }
         }
 
-        public byte[] data
+        internal byte[] data
         {
             get { return _data; }
             set { _data = value; }
         }
 
-        public byte[] response
+        internal byte[] response
         {
             get { return _response; }
             set { _response = value; }
         }
 
-        public byte[] statusWord
+        internal byte[] statusWord
         {
             get { return _statusWord; }
             set { _statusWord = value; }
         }
 
-        public void setCommand(byte[] cmd)
+        internal void setCommand(byte[] cmd)
         {
             if (cmd.Length != 5)
                 throw new Exception("Invalid command");
@@ -130,7 +130,7 @@ namespace TM.NFC.Core.MifareCore
             data = new byte[parameter3];
         }
 
-        public bool statusWordEqualTo(byte[] data)
+        internal bool statusWordEqualTo(byte[] data)
         {
             if (statusWord == null)
                 return false;

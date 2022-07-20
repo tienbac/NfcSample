@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TM.NFC.Core.CardCore;
-using TM.NFC.Core.PcscCore;
+using TN.NFC.Core.CardCore;
+using TN.NFC.Core.PcscCore;
 
-namespace TM.NFC.Core.MifareCore
+namespace TN.NFC.Core.MifareCore
 {
     internal class MifareHelper
     {
@@ -122,7 +122,7 @@ namespace TM.NFC.Core.MifareCore
             }
         }
 
-        public static String byteArrayToString(byte[] data)
+        internal static String byteArrayToString(byte[] data)
         {
             String str = "";
 
@@ -239,7 +239,7 @@ namespace TM.NFC.Core.MifareCore
             }
         }
 
-        public int ReadDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, byte readLength, out string ReadData)
+        internal int ReadDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, byte readLength, out string ReadData)
         {
             try
             {
@@ -294,7 +294,7 @@ namespace TM.NFC.Core.MifareCore
             return 1;
         }
 
-        public int WriteDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, string WriteData)
+        internal int WriteDataSimple(string ReaderName, byte keyNum, string keyString, byte blockNumber, bool isKeyB, byte startBlock, string WriteData)
         {
             try
             {
