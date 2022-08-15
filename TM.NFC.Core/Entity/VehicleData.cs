@@ -15,13 +15,14 @@ namespace TN.NFC.Core.Entity
         public TypeBlock1 CardType { get; set; }
         public DateTime ArriveTime { get; set; }
         public string Plate { get; set; }
+        public int VehicleType { get; set; }
 
         public VehicleData()
         {
 
         }
 
-        public VehicleData(string stationInId, string laneInId, StatusBlock1 status, TypeBlock1 cardType, DateTime arriveTime, string plate)
+        public VehicleData(string stationInId, string laneInId, StatusBlock1 status, TypeBlock1 cardType, DateTime arriveTime, string plate, int vehicleType)
         {
             StationInId = stationInId;
             LaneInId = laneInId;
@@ -29,6 +30,7 @@ namespace TN.NFC.Core.Entity
             CardType = cardType;
             ArriveTime = arriveTime;
             Plate = plate;
+            VehicleType = vehicleType;
         }
 
         public VehicleData(string dataCard, string time, string plate)
@@ -57,6 +59,7 @@ namespace TN.NFC.Core.Entity
             LaneInId = temp[0].Substring(4, 3);
             Status = (StatusBlock1)Convert.ToInt32(temp[0].Substring(7, 3));
             CardType = (TypeBlock1)Convert.ToInt32(temp[0].Substring(10, 3));
+            VehicleType = Convert.ToInt32(temp[0].Substring(13, 1));
 
             var time = temp[1];
             ArriveTime = DateTime.ParseExact(time, "yyyyMMddHHmmss", CultureInfo.CurrentCulture);
@@ -79,7 +82,7 @@ namespace TN.NFC.Core.Entity
 
         public override string ToString()
         {
-            var block4 = JoinString($"{StationInId}{LaneInId}{Convert.ToInt32(Status):D3}{Convert.ToInt32(CardType):D3}");
+            var block4 = JoinString($"{StationInId}{LaneInId}{Convert.ToInt32(Status):D3}{Convert.ToInt32(CardType):D3}{VehicleType}");
             var block5 = JoinString($"{ArriveTime:yyyyMMddHHmmss}");
             var block6 = JoinString($"{Plate}");
             var result = $"{block4}{block5}{block6}";

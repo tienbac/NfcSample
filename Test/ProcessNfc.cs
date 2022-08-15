@@ -209,7 +209,7 @@ namespace Test
                     // GHI DATA
                     // Tạo string bằng cách truyền vào StationID | LaneInId | Status | Type | InTime | Plate
                     var data = new VehicleData("1182", "001", StatusBlock1.Unpaid, TypeBlock1.BinhThuong, DateTime.Now,
-                        "30H25422").ToString();
+                        "30H25422", 1).ToString();
 
                     // Mã hóa
                     var dataHex = aes.EncryptStringToBytes_Aes(data, key);
