@@ -20,7 +20,19 @@ namespace Test
 
             // ĐIỀN TRUE = ĐỌC THẺ => TRẠM RA
             // ĐIỀN FALSE = GHI THẺ => TRẠM VÀO
-            new ProcessNfc().Initial(true);
+            //new ProcessNfc().Initial(true);
+            var a = "03 8B 76 08";
+            var b = a.Split(' ');
+            Array.Reverse(b);
+            var c = String.Join("",b);
+            var d = 16 - c.Length;
+            var e = "";
+            for (int i = 0; i < d; i++)
+            {
+                c = "0" + c;
+            }
+
+            //var f = $"{e}{c}";
 
             Console.Read();
         }
@@ -172,7 +184,8 @@ namespace Test
                 var aes = new TN.NFC.Core.Encrypt.AscEncrypt();
 
                 // KEY BÊN VE CẤP
-                var key = "1234567890123456";
+                var key = "92B0D1CCBB3877B6";
+                //var key = "1234567890123456";
 
                 if (ISREAD)
                 {

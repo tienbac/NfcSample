@@ -1,0 +1,13 @@
+﻿<Window x:Class="RFID.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RFID"
+        mc:Ignorable="d"
+        Title="RFID READER" Height="210" Width="400">
+    <Grid>
+        <TextBox x:Name="txtIdRFID" HorizontalAlignment="Left" Height="36" Margin="45,77,0,0" TextWrapping="Wrap" Text="IMEIL" VerticalAlignment="Top" Width="309"/>
+
+    </Grid>
+</Window>

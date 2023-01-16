@@ -48,35 +48,38 @@ namespace NfcSample
 
         static void Main(string[] args)
         {
-            var data = "1182001000000$$$20220711150003$$30H105033$$$$$$$";
+            //var data = "1182001000000$$$20220711150003$$30H105033$$$$$$$";
 
-            var key = "1234567890123456";
+            //var key = "1234567890123456";
 
-            var k = Encoding.ASCII.GetBytes(key);
+            //var k = Encoding.ASCII.GetBytes(key);
 
-            string original = "Here is some data to encrypt!";
+            //string original = "Here is some data to encrypt!";
 
-            byte[] encrypted = new byte[48];
+            //byte[] encrypted = new byte[48];
 
-            // Encrypt the string to an array of bytes.
-            encrypted = EncryptStringToBytes_Aes(data, k);
+            //// Encrypt the string to an array of bytes.
+            //encrypted = EncryptStringToBytes_Aes(data, k);
 
-            // Decrypt the bytes to a string.
-            string roundtrip = DecryptStringFromBytes_Aes(encrypted, k);
+            //// Decrypt the bytes to a string.
+            //string roundtrip = DecryptStringFromBytes_Aes(encrypted, k);
 
-            //Display the original data and the decrypted data.
-            Console.WriteLine("Original:   {0}", data);
-            Console.WriteLine("Round Trip: {0}", roundtrip);
+            ////Display the original data and the decrypted data.
+            //Console.WriteLine("Original:   {0}", data);
+            //Console.WriteLine("Round Trip: {0}", roundtrip);
 
-            var aes = new TN.NFC.Core.Encrypt.AscEncrypt();
-            var dataHex = aes.EncryptStringToBytes_Aes(data, key);
+            //var aes = new TN.NFC.Core.Encrypt.AscEncrypt();
+            //var dataHex = aes.EncryptStringToBytes_Aes(data, key);
 
-            var deHex = aes.DecryptStringFromBytes_Aes(dataHex, key);
+            //var deHex = aes.DecryptStringFromBytes_Aes(dataHex, key);
 
-            Console.WriteLine(JsonConvert.SerializeObject(deHex));
+            //Console.WriteLine(JsonConvert.SerializeObject(deHex));
 
 
-            //new Process2().Initial();
+            new Process2().Initial();
+
+
+
             Console.Read();
 
         }
@@ -295,22 +298,32 @@ namespace NfcSample
                 var keyString = "FF FF FF FF FF FF";
                 var isKeyB = false;
                 byte blockLength = 16;
-                var ReadData = "";
+                var ReadData4 = "";
+                var ReadData5 = "";
+                var ReadData6 = "";
 
                 var blockNum = Convert.ToByte(4);
                 var startBlock = Convert.ToByte(4);
-                var ret = reader.ReadDataSimple(PICC, keyNum, keyString, blockNum, isKeyB, startBlock, blockLength, out ReadData);
-                Console.WriteLine(ret < 0 ? "Read data fail !" : $"4 | {blockNum} | Read data : {ReadData}");
+                var ret = reader.ReadDataSimple(PICC, keyNum, keyString, blockNum, isKeyB, startBlock, blockLength, out ReadData4);
+                Console.WriteLine(ret < 0 ? "Read data fail !" : $"4 | {blockNum} | Read data : {ReadData4}");
 
                 blockNum = Convert.ToByte(5);
                 startBlock = Convert.ToByte(5);
-                ret = reader.ReadDataSimple(PICC, keyNum, keyString, blockNum, isKeyB, startBlock, blockLength, out ReadData);
-                Console.WriteLine(ret < 0 ? "Read data fail !" : $"5 | {blockNum} | Read data : {ReadData}");
+                ret = reader.ReadDataSimple(PICC, keyNum, keyString, blockNum, isKeyB, startBlock, blockLength, out ReadData5);
+                Console.WriteLine(ret < 0 ? "Read data fail !" : $"5 | {blockNum} | Read data : {ReadData5}");
 
                 blockNum = Convert.ToByte(6);
                 startBlock = Convert.ToByte(6);
-                ret = reader.ReadDataSimple(PICC, keyNum, keyString, blockNum, isKeyB, startBlock, blockLength, out ReadData);
-                Console.WriteLine(ret < 0 ? "Read data fail !" : $"6 | {blockNum} | Read data : {ReadData}");
+                ret = reader.ReadDataSimple(PICC, keyNum, keyString, blockNum, isKeyB, startBlock, blockLength, out ReadData6);
+                Console.WriteLine(ret < 0 ? "Read data fail !" : $"6 | {blockNum} | Read data : {ReadData6}");
+
+                var data = $"{ReadData4}{ReadData5}{ReadData6}";
+                Console.WriteLine(data);
+
+                var aes = new TN.NFC.Core.Encrypt.AscEncrypt();
+                var deHex = aes.DecryptStringFromBytes_Aes(dataHex, key);
+
+
             }
             else
             {

@@ -157,7 +157,7 @@ namespace Test
                 var aes = new TN.NFC.Core.Encrypt.AscEncrypt();
 
                 // KEY BÊN VE CẤP
-                var key = "1234567890123456";
+                var key = "92B0D1CCBB3877B6";
 
                 if (ISREAD)
                 {
